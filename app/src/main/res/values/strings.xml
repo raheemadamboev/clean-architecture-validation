@@ -8,4 +8,10 @@
     <string name="error_password_not_contains_digit">Please contain at least a digit in your password</string>
     <string name="error_password_not_same">Please write identical password for submission password</string>
     <string name="error_terms_condition_not_accepted">Please kindly accept our terms and conditions</string>
+    <string name="successful_registered">Successfully registered</string>
+    <string name="mail">Mail</string>
+    <string name="password">Password</string>
+    <string name="submission_password">Submit your password</string>
+    <string name="accept_terms_condition">I accept terms and conditions</string>
+    <string name="register">Register</string>
 </resources>

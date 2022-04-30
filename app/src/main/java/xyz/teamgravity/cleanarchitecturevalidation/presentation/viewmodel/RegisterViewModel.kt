@@ -124,7 +124,7 @@ class RegisterViewModel @Inject constructor(
         handle[TERMS_CONDITION_CHECKED] = value
     }
 
-    fun onValidate() {
+    fun onRegister() {
         safelyValidate {
             clearErrors()
             onValidateMail()
