@@ -6,4 +6,5 @@
     <string name="error_password_less_than_minimum">Please write at least %1$d length of password</string>
     <string name="error_password_not_contains_letter">Please contain at least a letter in your password</string>
     <string name="error_password_not_contains_digit">Please contain at least a digit in your password</string>
+    <string name="error_password_not_same">Please write identical password for submission password</string>
 </resources>
