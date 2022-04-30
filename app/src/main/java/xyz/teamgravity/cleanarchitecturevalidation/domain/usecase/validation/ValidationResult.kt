@@ -4,5 +4,5 @@ import xyz.teamgravity.cleanarchitecturevalidation.core.util.UniversalText
 
 sealed class ValidationResult {
     object Success : ValidationResult()
-    data class Error(val message: UniversalText)
+    data class Error(val message: UniversalText): ValidationResult()
 }
