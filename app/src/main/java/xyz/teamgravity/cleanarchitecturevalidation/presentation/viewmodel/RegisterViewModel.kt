@@ -5,7 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import xyz.teamgravity.cleanarchitecturevalidation.core.util.UniversalText
 import xyz.teamgravity.cleanarchitecturevalidation.domain.usecase.validation.*
 import javax.inject.Inject
@@ -25,6 +30,9 @@ class RegisterViewModel @Inject constructor(
         private const val SUBMISSION_PASSWORD = "submission_password"
         private const val TERMS_CONDITION_CHECKED = "terms_condition_checked"
     }
+
+    private val _event = Channel<RegisterEvent>()
+    val event: Flow<RegisterEvent> = _event.receiveAsFlow()
 
     var mail: String by mutableStateOf(handle.get<String>(MAIL) ?: "")
         private set
@@ -59,22 +67,41 @@ class RegisterViewModel @Inject constructor(
 
     private fun onValidateMail() {
         val result = validateMail(mail)
-        if (result is ValidationResult.Error) errorMail = result.message
+        if (result is ValidationResult.Error) {
+            errorMail = result.message
+            throw ValidationException()
+        }
     }
 
     private fun onValidatePassword() {
         val result = validatePassword(password)
-        if (result is ValidationResult.Error) errorPassword = result.message
+        if (result is ValidationResult.Error) {
+            errorPassword = result.message
+            throw ValidationException()
+        }
     }
 
     private fun onValidateSubmissionPassword() {
         val result = validateSubmissionPassword(password = password, submissionPassword = submissionPassword)
-        if (result is ValidationResult.Error) errorSubmissionPassword = result.message
+        if (result is ValidationResult.Error) {
+            errorSubmissionPassword = result.message
+            throw ValidationException()
+        }
     }
 
     private fun onValidateTermsCondition() {
         val result = validateTermsCondition(termsConditionChecked)
-        if (result is ValidationResult.Error) errorTermsConditionChecked = result.message
+        if (result is ValidationResult.Error) {
+            errorTermsConditionChecked = result.message
+            throw ValidationException()
+        }
+    }
+
+    private fun safelyValidate(execution: () -> Unit) {
+        try {
+            execution()
+        } catch (e: ValidationException) {
+        }
     }
 
     fun onMailChange(value: String) {
@@ -98,10 +125,19 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun onValidate() {
-        clearErrors()
-        onValidateMail()
-        onValidatePassword()
-        onValidateSubmissionPassword()
-        onValidateTermsCondition()
+        safelyValidate {
+            clearErrors()
+            onValidateMail()
+            onValidatePassword()
+            onValidateSubmissionPassword()
+            onValidateTermsCondition()
+            viewModelScope.launch { _event.send(RegisterEvent.Success) }
+        }
     }
+
+    sealed class RegisterEvent {
+        object Success : RegisterEvent()
+    }
+
+    class ValidationException : RuntimeException()
 }
