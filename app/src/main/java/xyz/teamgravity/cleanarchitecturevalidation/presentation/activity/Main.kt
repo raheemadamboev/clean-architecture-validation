@@ -1,4 +1,4 @@
-package xyz.teamgravity.cleanarchitecturevalidation
+package xyz.teamgravity.cleanarchitecturevalidation.presentation.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,9 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import xyz.teamgravity.cleanarchitecturevalidation.ui.theme.CleanArchitectureValidationTheme
+import xyz.teamgravity.cleanarchitecturevalidation.presentation.theme.CleanArchitectureValidationTheme
 
-class MainActivity : ComponentActivity() {
+class Main : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

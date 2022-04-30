@@ -1,4 +1,4 @@
-package xyz.teamgravity.cleanarchitecturevalidation.ui.theme
+package xyz.teamgravity.cleanarchitecturevalidation.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

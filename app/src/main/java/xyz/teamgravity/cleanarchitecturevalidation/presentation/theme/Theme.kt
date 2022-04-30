@@ -1,4 +1,4 @@
-package xyz.teamgravity.cleanarchitecturevalidation.ui.theme
+package xyz.teamgravity.cleanarchitecturevalidation.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
